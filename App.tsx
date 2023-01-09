@@ -1,15 +1,36 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
-import Separator from "./components/Separator";
+import LoginScreen from "./screens/LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "./screens/HomeScreen";
+
+type RootStackParamList = {
+    Connexion: undefined;
+    Home: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Gestion du Zoo</Text>
-            <Separator />
-            <Image style={styles.logo} source={require("./assets/logo.png")} />
-            <StatusBar style="auto" />
-        </View>
+        <NavigationContainer>
+            <Stack.Navigator
+                initialRouteName="Connexion"
+                screenOptions={{ headerStyle: { backgroundColor: "#4b4844" } }}
+            >
+                <Stack.Screen name="Connexion" component={LoginScreen} />
+                <Stack.Screen name="Home" component={HomeScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
+
+        //     <View style={styles.container}>
+        //         <Text style={styles.title}>Gestion du Zoo</Text>
+        //         <Separator />
+        //         <Image style={styles.logo} source={require("./assets/logo.png")} />
+        //         <LoginBox />
+        //         <StatusBar style="auto" />
+        //     </View>
     );
 }
 
