@@ -1,10 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const storeData = async (value: any) => {
+const storeData = async (token: string) => {
     try {
-        console.log("storeData : " + JSON.stringify(value.employee));
-        await AsyncStorage.setItem("token", JSON.stringify(value.token));
-        await AsyncStorage.setItem("employee", JSON.stringify(value.employee));
+        console.log("storeData : " + JSON.stringify(token));
+        await AsyncStorage.setItem("token", JSON.stringify(token));
     } catch (e) {
         console.log("StoreData : " + e);
     }
@@ -22,7 +21,7 @@ const getData = async (dataType: string) => {
 };
 
 const removeKeys = async () => {
-    const keys = ["token", "employee"];
+    const keys = ["token"];
     try {
         await AsyncStorage.multiRemove(keys);
     } catch (e) {

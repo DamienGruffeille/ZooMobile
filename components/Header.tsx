@@ -1,28 +1,32 @@
 import { Pressable, StyleSheet, Text, View, Image, Alert } from "react-native";
-import React from "react";
+import React, { useContext, useState } from "react";
 import dataStorage from "../functions/dataStorage";
 import { StackActions, useNavigation } from "@react-navigation/native";
+import { UserContext } from "../functions/UserContext";
+import Employee from "../interfaces/employee";
 
 type Props = {};
 
 const Header = () => {
     const navigation = useNavigation();
+    const { setEmployee } = useContext(UserContext);
 
     const doUserLogOut = async () => {
         await dataStorage
             .removeKeys()
             .then(async () => {
-                const currentUser = await dataStorage.getData("employee");
-
-                if (currentUser === null) {
-                    Alert.alert("Success!", "Utilisateur déconnecté");
+                const currentToken = await dataStorage.getData("token");
+                console.log("CurrentToken: " + currentToken);
+                if (currentToken === null) {
+                    setEmployee(null);
                 }
-
-                navigation.dispatch(StackActions.popToTop());
             })
             .catch((error) => {
                 Alert.alert("Error!", error.message);
             });
+
+        Alert.alert("Success!", "Utilisateur déconnecté");
+        navigation.dispatch(StackActions.popToTop());
     };
 
     return (
