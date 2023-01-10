@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, Image, TextInput, Button } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    TextInput,
+    Button,
+    Alert,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import dataStorage from "../functions/dataStorage";
@@ -16,13 +24,9 @@ const LoginScreen = ({ navigation }: Props) => {
     const [password, setPassword] = useState("");
     const [loginFailed, setLoginFailed] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     dataStorage.removeKeys();
-    //     console.log("Removing Keys");
-    // }, []);
-
     const handleConnexion = async () => {
-        await fetch("http://172.27.144.1:3000/api/employes/login", {
+        console.log("Fetching user info");
+        await fetch("http://172.16.130.38:3000/api/employes/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             // credentials: "include",
@@ -40,11 +44,11 @@ const LoginScreen = ({ navigation }: Props) => {
             .catch((error) => {
                 console.log(error);
             })
-            .then((value) => {
+            .then(async (value) => {
                 if (value) {
-                    console.log("value : " + value.employee);
-                    dataStorage.storeData(value);
-                    console.log("Setting Keys");
+                    console.log("value : " + JSON.stringify(value.employee));
+                    await dataStorage.storeData(value);
+                    Alert.alert("Success!", "Utilisateur connecté!");
                     setLoginFailed(false);
                     navigation.navigate("Home");
                 }

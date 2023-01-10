@@ -13,13 +13,35 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
-const HomeScreen = (props: Props) => {
+const HomeScreen = () => {
+    const [employee, setEmployee] = useState<Employee | null>(null);
+
+    useEffect(() => {
+        const getEmployee = async () => {
+            console.log("Getting employee");
+            if (employee === null) {
+                const _employee = await dataStorage.getData("employee");
+                if (_employee) setEmployee(JSON.parse(_employee));
+            }
+        };
+
+        getEmployee();
+    }, [employee]);
     return (
         <View style={styles.container}>
             <Header />
 
             <View style={styles.card}>
-                <Text>Récapitulatif des tâches :</Text>
+                {employee ? (
+                    <>
+                        <Text>
+                            {employee.firstName} {employee.name}
+                        </Text>
+                        <Text>Zone: {employee.zone}</Text>
+                    </>
+                ) : (
+                    <Text></Text>
+                )}
             </View>
         </View>
     );
