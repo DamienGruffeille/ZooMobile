@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TextInput, Button } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import dataStorage from "../functions/dataStorage";
 import Separator from "../components/Separator";
@@ -15,6 +15,11 @@ const LoginScreen = ({ navigation }: Props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginFailed, setLoginFailed] = useState<boolean>(false);
+
+    // useEffect(() => {
+    //     dataStorage.removeKeys();
+    //     console.log("Removing Keys");
+    // }, []);
 
     const handleConnexion = async () => {
         await fetch("http://172.27.144.1:3000/api/employes/login", {
@@ -37,7 +42,9 @@ const LoginScreen = ({ navigation }: Props) => {
             })
             .then((value) => {
                 if (value) {
+                    console.log("value : " + value.employee);
                     dataStorage.storeData(value);
+                    console.log("Setting Keys");
                     setLoginFailed(false);
                     navigation.navigate("Home");
                 }
