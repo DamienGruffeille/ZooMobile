@@ -1,23 +1,30 @@
-import { Pressable, StyleSheet, Text, View, Image } from "react-native";
-import React, { useEffect, useState } from "react";
-import Employee from "../interfaces/employee";
+import { Pressable, StyleSheet, Text, View, Image, Alert } from "react-native";
+import React from "react";
 import dataStorage from "../functions/dataStorage";
+import { StackActions, useNavigation } from "@react-navigation/native";
 
 type Props = {};
 
-const Header = (props: Props) => {
-    const [employee, setEmployee] = useState<Employee>();
+const Header = () => {
+    const navigation = useNavigation();
 
-    const getEmployee = async () => {
-        const _employee = await dataStorage.getData("employee");
+    const doUserLogOut = async () => {
+        await dataStorage
+            .removeKeys()
+            .then(async () => {
+                const currentUser = await dataStorage.getData("employee");
 
-        if (_employee) setEmployee(JSON.parse(_employee));
-        console.log("Getting employee : " + _employee);
+                if (currentUser === null) {
+                    Alert.alert("Success!", "Utilisateur déconnecté");
+                }
+
+                navigation.dispatch(StackActions.popToTop());
+            })
+            .catch((error) => {
+                Alert.alert("Error!", error.message);
+            });
     };
 
-    useEffect(() => {
-        getEmployee();
-    }, []);
     return (
         <View style={styles.header}>
             <View style={styles.titleBlock}>
@@ -28,11 +35,7 @@ const Header = (props: Props) => {
                 <Text style={styles.title}>Gestion du Zoo</Text>
             </View>
             <View style={styles.employee}>
-                <Text>
-                    {employee?.firstName} {employee?.name}
-                </Text>
-                <Text>Zone : {employee?.zone}</Text>
-                <Pressable style={styles.loggoutButton}>
+                <Pressable onPress={doUserLogOut} style={styles.loggoutButton}>
                     <Text>Déconnexion</Text>
                 </Pressable>
             </View>
