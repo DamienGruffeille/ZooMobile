@@ -26,6 +26,7 @@ const LoginScreen = ({ navigation }: Props) => {
     const [loginFailed, setLoginFailed] = useState<boolean>(false);
 
     const { setEmployee } = useContext(UserContext);
+    const { setToken } = useContext(UserContext);
 
     const handleConnexion = async () => {
         console.log("Fetching user info");
@@ -51,6 +52,7 @@ const LoginScreen = ({ navigation }: Props) => {
                 if (value) {
                     setEmployee(value.employee);
                     dataStorage.storeData(value.token);
+                    setToken(value.token);
 
                     Alert.alert("Vous êtes connecté!");
 

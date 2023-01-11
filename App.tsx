@@ -1,11 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
-import LoginScreen from "./screens/LoginScreen";
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
 import { UserContext } from "./functions/UserContext";
-import { useState } from "react";
+import LoginScreen from "./screens/LoginScreen";
+import HomeScreen from "./screens/HomeScreen";
 import Employee from "./interfaces/employee";
 import AnimalsScreen from "./screens/AnimalsScreen";
 import ActionsScreen from "./screens/ActionsScreen";
@@ -19,20 +20,36 @@ type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const queryClient = new QueryClient();
+
 export default function App() {
     const [employee, setEmployee] = useState<Employee | null>(null);
+    const [token, setToken] = useState<string | null>(null);
 
     return (
-        <NavigationContainer>
-            <UserContext.Provider value={{ employee, setEmployee }}>
-                <Stack.Navigator initialRouteName="Connexion">
-                    <Stack.Screen name="Connexion" component={LoginScreen} />
-                    <Stack.Screen name="Home" component={HomeScreen} />
-                    <Stack.Screen name="Animaux" component={AnimalsScreen} />
-                    <Stack.Screen name="Actions" component={ActionsScreen} />
-                </Stack.Navigator>
-            </UserContext.Provider>
-        </NavigationContainer>
+        <QueryClientProvider client={queryClient}>
+            <NavigationContainer>
+                <UserContext.Provider
+                    value={{ employee, setEmployee, token, setToken }}
+                >
+                    <Stack.Navigator initialRouteName="Connexion">
+                        <Stack.Screen
+                            name="Connexion"
+                            component={LoginScreen}
+                        />
+                        <Stack.Screen name="Home" component={HomeScreen} />
+                        <Stack.Screen
+                            name="Animaux"
+                            component={AnimalsScreen}
+                        />
+                        <Stack.Screen
+                            name="Actions"
+                            component={ActionsScreen}
+                        />
+                    </Stack.Navigator>
+                </UserContext.Provider>
+            </NavigationContainer>
+        </QueryClientProvider>
 
         //     <View style={styles.container}>
         //         <Text style={styles.title}>Gestion du Zoo</Text>
