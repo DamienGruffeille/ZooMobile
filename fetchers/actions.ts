@@ -23,3 +23,24 @@ export const getActionsByEmployee = async (
         console.log(error.message);
     }
 };
+
+export const updateAction = async (actionId: string, token: string | null) => {
+    try {
+        if (token) {
+            const config = await createAxiosConfig(token);
+            const payLoad = { _id: actionId };
+
+            const response = await axios.put(
+                `http://172.16.130.38:3000/api/actions/update`,
+                payLoad,
+                config
+            );
+
+            const updatedAction: Action = response.data.actionUpdated;
+
+            return updatedAction;
+        }
+    } catch (error: any) {
+        console.log(error.message);
+    }
+};

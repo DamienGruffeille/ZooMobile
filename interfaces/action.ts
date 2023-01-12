@@ -5,9 +5,9 @@ import Specie from "./specie";
 export default interface Action {
     _id: string;
     createdBy: string;
-    enclosure: Enclosure;
-    specie: Specie;
-    animal: Animal;
+    enclosure: string;
+    specie: string;
+    animal: string;
     plannedDate: string;
     status: string;
     observation: string;

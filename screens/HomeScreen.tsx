@@ -13,6 +13,7 @@ type RootStackParamList = {
     Home: undefined;
     Animaux: undefined;
     Actions: undefined;
+    Evenements: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
@@ -28,6 +29,14 @@ const HomeScreen = ({ navigation }: Props) => {
 
     function goToAnimalPage() {
         navigation.navigate("Animaux");
+    }
+
+    function goToActionsPage() {
+        navigation.navigate("Actions");
+    }
+
+    function goToEventsPage() {
+        navigation.navigate("Evenements");
     }
 
     const { data: actions } = useQuery({
@@ -98,7 +107,7 @@ const HomeScreen = ({ navigation }: Props) => {
                                 <Text style={styles.title}>Actions : </Text>
                                 <Text>
                                     {actionsDoneToday.length +
-                                        " actions terminées"}
+                                        " actions terminées ce jour"}
                                 </Text>
 
                                 <Text>
@@ -116,23 +125,41 @@ const HomeScreen = ({ navigation }: Props) => {
                     )}
                 </View>
 
-                <Pressable style={styles.card} onPress={goToAnimalPage}>
+                <Pressable
+                    style={({ pressed }) => [
+                        { opacity: pressed ? 0.5 : 1 },
+                        styles.card,
+                    ]}
+                    onPress={goToAnimalPage}
+                >
                     <View style={styles.inner}>
                         <Text>Gestion des animaux</Text>
                     </View>
                 </Pressable>
 
-                <View style={styles.card}>
+                <Pressable
+                    style={({ pressed }) => [
+                        { opacity: pressed ? 0.5 : 1 },
+                        styles.card,
+                    ]}
+                    onPress={goToActionsPage}
+                >
                     <View style={styles.inner}>
                         <Text>Actions</Text>
                     </View>
-                </View>
+                </Pressable>
 
-                <View style={styles.card}>
+                <Pressable
+                    style={({ pressed }) => [
+                        { opacity: pressed ? 0.5 : 1 },
+                        styles.card,
+                    ]}
+                    onPress={goToEventsPage}
+                >
                     <View style={styles.inner}>
                         <Text>Evènements</Text>
                     </View>
-                </View>
+                </Pressable>
             </View>
         </>
     );
@@ -145,7 +172,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "85%",
         padding: 5,
-        flexDirection: "row",
+        flexDirection: "column",
         flexWrap: "wrap",
         alignItems: "center",
         justifyContent: "center",
@@ -153,8 +180,8 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        width: "48%",
-        height: "48%",
+        width: "100%",
+        height: "23%",
         padding: 5,
         margin: 3,
         borderRadius: 10,

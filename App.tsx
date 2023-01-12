@@ -10,12 +10,14 @@ import HomeScreen from "./screens/HomeScreen";
 import Employee from "./interfaces/employee";
 import AnimalsScreen from "./screens/AnimalsScreen";
 import ActionsScreen from "./screens/ActionsScreen";
+import EventsScreen from "./screens/EventsScreen";
 
 type RootStackParamList = {
     Connexion: undefined;
     Home: undefined;
     Animaux: undefined;
     Actions: undefined;
+    Evenements: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -45,6 +47,10 @@ export default function App() {
                         <Stack.Screen
                             name="Actions"
                             component={ActionsScreen}
+                        />
+                        <Stack.Screen
+                            name="Evenements"
+                            component={EventsScreen}
                         />
                     </Stack.Navigator>
                 </UserContext.Provider>
