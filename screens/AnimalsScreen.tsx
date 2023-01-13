@@ -10,6 +10,7 @@ import Specie from "../interfaces/specie";
 import { fetchSpeciesByZone } from "../fetchers/species";
 import EnclosureCheck from "../components/EnclosureCheck";
 import SpecyPosition from "../components/SpecyPosition";
+import AnimalPosition from "../components/AnimalPosition";
 
 type RootStackParamList = {
     Connexion: undefined;
@@ -110,6 +111,10 @@ const AnimalsScreen = ({ navigation }: Props) => {
                                                 />
                                             </View>
                                         </View>
+
+                                        <AnimalPosition
+                                            specy={selectedSpecie}
+                                        />
                                     </>
                                 );
                             })}
