@@ -7,10 +7,11 @@ import {
     Button,
     Alert,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import dataStorage from "../functions/dataStorage";
 import Separator from "../components/Separator";
+import { UserContext } from "../functions/UserContext";
 
 type RootStackParamList = {
     Connexion: undefined;
@@ -23,6 +24,9 @@ const LoginScreen = ({ navigation }: Props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginFailed, setLoginFailed] = useState<boolean>(false);
+
+    const { setEmployee } = useContext(UserContext);
+    const { setToken } = useContext(UserContext);
 
     const handleConnexion = async () => {
         console.log("Fetching user info");
@@ -44,12 +48,16 @@ const LoginScreen = ({ navigation }: Props) => {
             .catch((error) => {
                 console.log(error);
             })
-            .then(async (value) => {
+            .then((value) => {
                 if (value) {
-                    console.log("value : " + JSON.stringify(value.employee));
-                    await dataStorage.storeData(value);
-                    Alert.alert("Success!", "Utilisateur connecté!");
+                    setEmployee(value.employee);
+                    dataStorage.storeData(value.token);
+                    setToken(value.token);
+
+                    Alert.alert("Vous êtes connecté!");
+
                     setLoginFailed(false);
+
                     navigation.navigate("Home");
                 }
             });
